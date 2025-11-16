@@ -1,11 +1,11 @@
-FROM openjdk:17-jdk-slim
+FROM amazoncorretto:17-alpine
 
 # Metadatos
 LABEL maintainer="mi-playlist"
 LABEL description="Aplicación Mi Playlist Musical"
 
-# Instalar wget para healthcheck
-RUN apt-get update && apt-get install -y wget && rm -rf /var/lib/apt/lists/*
+# Instalar wget para healthcheck (Alpine usa apk, no apt-get)
+RUN apk add --no-cache wget
 
 # Directorio de trabajo
 WORKDIR /app
