@@ -42,8 +42,34 @@ public class Video {
     @JsonIgnore
     public String getEmbedUrl() {
         String embedUrl = this.url;
+        embedUrl = getYoutubeUrl(embedUrl);
+        embedUrl = getVimeoUrl(embedUrl);
+        embedUrl = getSpotifyUrl(embedUrl);
+        return embedUrl;
+    }
 
+    private static String getSpotifyUrl(String embedUrl) {
+        if (embedUrl.contains("open.spotify.com/")) {
+            embedUrl = embedUrl.replace("open.spotify.com/", "open.spotify.com/embed/");
+            if (embedUrl.contains("?")) {
+                embedUrl = embedUrl.substring(0, embedUrl.indexOf("?"));
+            }
+        }
+        return embedUrl;
+    }
 
+    private static String getVimeoUrl(String embedUrl) {
+        if (embedUrl.contains("vimeo.com/")) {
+            String videoId = embedUrl.substring(embedUrl.lastIndexOf("/") + 1);
+            if (videoId.contains("?")) {
+                videoId = videoId.substring(0, videoId.indexOf("?"));
+            }
+            embedUrl = "https://player.vimeo.com/video/" + videoId;
+        }
+        return embedUrl;
+    }
+
+    private static String getYoutubeUrl(String embedUrl) {
         if (embedUrl.contains("youtube.com/watch?v=")) {
             String videoId = embedUrl.substring(embedUrl.indexOf("watch?v=") + 8);
             if (videoId.contains("&")) {
@@ -57,25 +83,6 @@ public class Video {
             }
             embedUrl = "https://www.youtube.com/embed/" + videoId;
         }
-
-
-        if (embedUrl.contains("vimeo.com/")) {
-            String videoId = embedUrl.substring(embedUrl.lastIndexOf("/") + 1);
-            if (videoId.contains("?")) {
-                videoId = videoId.substring(0, videoId.indexOf("?"));
-            }
-            embedUrl = "https://player.vimeo.com/video/" + videoId;
-        }
-
-
-        if (embedUrl.contains("open.spotify.com/")) {
-            embedUrl = embedUrl.replace("open.spotify.com/", "open.spotify.com/embed/");
-            if (embedUrl.contains("?")) {
-                embedUrl = embedUrl.substring(0, embedUrl.indexOf("?"));
-            }
-        }
-
-
         return embedUrl;
     }
 
