@@ -6,9 +6,6 @@ import org.junit.jupiter.api.DisplayName;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Tests unitarios para la clase Video
- */
 class VideoTest {
 
     private Video video;

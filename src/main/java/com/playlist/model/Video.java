@@ -67,11 +67,9 @@ public class Video {
             embedUrl = "https://player.vimeo.com/video/" + videoId;
         }
 
-        // Spotify: tracks, albums, playlists
+
         if (embedUrl.contains("open.spotify.com/")) {
-            // Convertir URLs de Spotify al formato embed
             embedUrl = embedUrl.replace("open.spotify.com/", "open.spotify.com/embed/");
-            // Limpiar parámetros innecesarios
             if (embedUrl.contains("?")) {
                 embedUrl = embedUrl.substring(0, embedUrl.indexOf("?"));
             }
