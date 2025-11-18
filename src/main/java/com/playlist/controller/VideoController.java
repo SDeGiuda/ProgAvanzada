@@ -11,9 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-/**
- * Controlador REST para gestionar operaciones sobre videos
- */
+
 @RestController
 @RequestMapping("/api/videos")
 public class VideoController {
@@ -26,7 +24,7 @@ public class VideoController {
     }
 
     /**
-     * GET /api/videos - Obtiene todos los videos
+     * GET /api/videos -
      */
     @GetMapping
     public ResponseEntity<List<Video>> obtenerTodos() {
@@ -35,7 +33,7 @@ public class VideoController {
     }
 
     /**
-     * GET /api/videos/{id} - Obtiene un video por ID
+     * GET /api/videos/{id} -
      */
     @GetMapping("/{id}")
     public ResponseEntity<Video> obtenerPorId(@PathVariable String id) {
@@ -45,7 +43,7 @@ public class VideoController {
     }
 
     /**
-     * POST /api/videos - Agrega un nuevo video
+     * POST /api/videos -
      */
     @PostMapping
     public ResponseEntity<Video> agregarVideo(@RequestBody Map<String, String> payload) {
@@ -61,7 +59,7 @@ public class VideoController {
     }
 
     /**
-     * DELETE /api/videos/{id} - Elimina un video
+     * DELETE /api/videos/{id} -
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarVideo(@PathVariable String id) {
@@ -73,7 +71,7 @@ public class VideoController {
     }
 
     /**
-     * POST /api/videos/{id}/like - Da like a un video
+     * POST /api/videos/{id}/like -
      */
     @PostMapping("/{id}/like")
     public ResponseEntity<Video> darLike(@PathVariable String id) {
@@ -83,7 +81,7 @@ public class VideoController {
     }
 
     /**
-     * POST /api/videos/{id}/favorito - Marca/desmarca como favorito
+     * POST /api/videos/{id}/favorito -
      */
     @PostMapping("/{id}/favorito")
     public ResponseEntity<Video> toggleFavorito(@PathVariable String id) {
@@ -93,7 +91,7 @@ public class VideoController {
     }
 
     /**
-     * GET /api/videos/favoritos - Obtiene solo los videos favoritos
+     * GET /api/videos/favoritos -
      */
     @GetMapping("/favoritos")
     public ResponseEntity<List<Video>> obtenerFavoritos() {

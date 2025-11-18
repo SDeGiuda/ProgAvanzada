@@ -1,12 +1,10 @@
 let allVideos = [];
 let currentFilter = 'all';
 
-// Cargar videos al iniciar
 document.addEventListener('DOMContentLoaded', function() {
     cargarVideos();
 });
 
-// Formulario de agregar video
 document.getElementById('addVideoForm').addEventListener('submit', function(e) {
     e.preventDefault();
     agregarVideo();
@@ -69,13 +67,11 @@ async function darLike(id) {
         if (response.ok) {
             const videoActualizado = await response.json();
 
-            // Actualizar el array local
             const index = allVideos.findIndex(v => v.id === id);
             if (index !== -1) {
                 allVideos[index] = videoActualizado;
             }
 
-            // Actualizar solo el contador de likes en el DOM
             const videoCard = document.querySelector(`[data-video-id="${id}"]`);
             if (videoCard) {
                 const likesCount = videoCard.querySelector('.likes-count');
@@ -98,29 +94,24 @@ async function toggleFavorito(id) {
         if (response.ok) {
             const videoActualizado = await response.json();
 
-            // Actualizar el array local
+
             const index = allVideos.findIndex(v => v.id === id);
             if (index !== -1) {
                 allVideos[index] = videoActualizado;
             }
 
-            // Actualizar el DOM
             const videoCard = document.querySelector(`[data-video-id="${id}"]`);
             if (videoCard) {
-                // Actualizar badge de favorito
                 const existingBadge = videoCard.querySelector('.favorite-badge');
                 if (videoActualizado.favorito && !existingBadge) {
-                    // Agregar badge
                     const badge = document.createElement('span');
                     badge.className = 'favorite-badge';
                     badge.innerHTML = '<i class="fas fa-star"></i> Favorito';
                     videoCard.insertBefore(badge, videoCard.firstChild);
                 } else if (!videoActualizado.favorito && existingBadge) {
-                    // Remover badge
                     existingBadge.remove();
                 }
 
-                // Actualizar botón
                 const btnFavorite = videoCard.querySelector('.btn-favorite');
                 const btnText = videoCard.querySelector('.btn-favorite-text');
                 if (btnFavorite && btnText) {
@@ -142,7 +133,6 @@ async function toggleFavorito(id) {
 function filterVideos(filter) {
     currentFilter = filter;
 
-    // Actualizar botones
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.classList.remove('active');
     });
@@ -172,11 +162,15 @@ function mostrarVideos() {
         return;
     }
 
-    container.innerHTML = videosToShow.map(video => `
+    container.innerHTML = videosToShow.map(video => {
+        const isSpotify = video.url.includes('spotify.com');
+        const containerClass = isSpotify ? 'video-container spotify-container' : 'video-container';
+
+        return `
         <div class="col-md-6 col-lg-4">
             <div class="video-card" data-video-id="${video.id}">
                 ${video.favorito ? '<span class="favorite-badge"><i class="fas fa-star"></i> Favorito</span>' : ''}
-                <div class="video-container">
+                <div class="${containerClass}">
                     <iframe src="${getEmbedUrl(video.url)}"
                             frameborder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -199,13 +193,13 @@ function mostrarVideos() {
                 </div>
             </div>
         </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 function getEmbedUrl(url) {
     let embedUrl = url;
 
-    // YouTube
     if (url.includes('youtube.com/watch?v=')) {
         const videoId = url.split('watch?v=')[1].split('&')[0];
         embedUrl = `https://www.youtube.com/embed/${videoId}`;
@@ -214,10 +208,19 @@ function getEmbedUrl(url) {
         embedUrl = `https://www.youtube.com/embed/${videoId}`;
     }
 
-    // Vimeo
     if (url.includes('vimeo.com/')) {
         const videoId = url.split('vimeo.com/')[1].split('?')[0];
         embedUrl = `https://player.vimeo.com/video/${videoId}`;
+    }
+
+    // Spotify: tracks, albums, playlists
+    if (url.includes('open.spotify.com/')) {
+        // Convertir URLs de Spotify al formato embed
+        embedUrl = url.replace('open.spotify.com/', 'open.spotify.com/embed/');
+        // Limpiar parámetros innecesarios
+        if (embedUrl.includes('?')) {
+            embedUrl = embedUrl.split('?')[0];
+        }
     }
 
     return embedUrl;

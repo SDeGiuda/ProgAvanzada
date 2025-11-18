@@ -11,9 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Repositorio para gestionar la persistencia de videos en archivo JSON
- */
+
 @Repository
 public class VideoRepository {
     
@@ -26,9 +24,6 @@ public class VideoRepository {
         this.videos = loadVideos();
     }
 
-    /**
-     * Carga los videos desde el archivo JSON
-     */
     private List<Video> loadVideos() {
         File file = new File(DATA_FILE);
         if (file.exists()) {
@@ -41,9 +36,7 @@ public class VideoRepository {
         return new ArrayList<>();
     }
 
-    /**
-     * Guarda los videos en el archivo JSON
-     */
+
     private void saveVideos() {
         try {
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(DATA_FILE), videos);
@@ -52,34 +45,26 @@ public class VideoRepository {
         }
     }
 
-    /**
-     * Obtiene todos los videos
-     */
+
     public List<Video> findAll() {
         return new ArrayList<>(videos);
     }
 
-    /**
-     * Busca un video por ID
-     */
+
     public Optional<Video> findById(String id) {
         return videos.stream()
                 .filter(v -> v.getId().equals(id))
                 .findFirst();
     }
 
-    /**
-     * Guarda un nuevo video
-     */
+
     public Video save(Video video) {
         videos.add(video);
         saveVideos();
         return video;
     }
 
-    /**
-     * Actualiza un video existente
-     */
+
     public Video update(Video video) {
         videos.removeIf(v -> v.getId().equals(video.getId()));
         videos.add(video);
@@ -87,9 +72,7 @@ public class VideoRepository {
         return video;
     }
 
-    /**
-     * Elimina un video por ID
-     */
+
     public boolean deleteById(String id) {
         boolean removed = videos.removeIf(v -> v.getId().equals(id));
         if (removed) {
@@ -98,18 +81,14 @@ public class VideoRepository {
         return removed;
     }
 
-    /**
-     * Obtiene todos los videos favoritos
-     */
+
     public List<Video> findFavorites() {
         return videos.stream()
                 .filter(Video::isFavorito)
                 .toList();
     }
 
-    /**
-     * Cuenta el total de videos
-     */
+
     public long count() {
         return videos.size();
     }

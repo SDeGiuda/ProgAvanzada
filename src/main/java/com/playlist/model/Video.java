@@ -5,9 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Clase que representa un video musical en la playlist
- */
 public class Video {
     
     @JsonProperty("id")
@@ -25,14 +22,14 @@ public class Video {
     @JsonProperty("favorito")
     private boolean favorito;
 
-    // Constructor vacío para Jackson
+
     public Video() {
         this.id = UUID.randomUUID().toString();
         this.likes = 0;
         this.favorito = false;
     }
 
-    // Constructor con parámetros
+
     public Video(String nombre, String url) {
         this.id = UUID.randomUUID().toString();
         this.nombre = nombre;
@@ -41,13 +38,12 @@ public class Video {
         this.favorito = false;
     }
 
-    // CODE SMELL: Long Method - Este método hace demasiadas cosas
-    // Debería refactorizarse usando Extract Method
+
     @JsonIgnore
     public String getEmbedUrl() {
         String embedUrl = this.url;
-        
-        // Procesar URL de YouTube
+
+
         if (embedUrl.contains("youtube.com/watch?v=")) {
             String videoId = embedUrl.substring(embedUrl.indexOf("watch?v=") + 8);
             if (videoId.contains("&")) {
@@ -61,8 +57,8 @@ public class Video {
             }
             embedUrl = "https://www.youtube.com/embed/" + videoId;
         }
-        
-        // Procesar URL de Vimeo
+
+
         if (embedUrl.contains("vimeo.com/")) {
             String videoId = embedUrl.substring(embedUrl.lastIndexOf("/") + 1);
             if (videoId.contains("?")) {
@@ -70,23 +66,22 @@ public class Video {
             }
             embedUrl = "https://player.vimeo.com/video/" + videoId;
         }
-        
-        // Procesar URL de Dailymotion
-        if (embedUrl.contains("dailymotion.com/video/")) {
-            String videoId = embedUrl.substring(embedUrl.indexOf("video/") + 6);
-            if (videoId.contains("?")) {
-                videoId = videoId.substring(0, videoId.indexOf("?"));
+
+        // Spotify: tracks, albums, playlists
+        if (embedUrl.contains("open.spotify.com/")) {
+            // Convertir URLs de Spotify al formato embed
+            embedUrl = embedUrl.replace("open.spotify.com/", "open.spotify.com/embed/");
+            // Limpiar parámetros innecesarios
+            if (embedUrl.contains("?")) {
+                embedUrl = embedUrl.substring(0, embedUrl.indexOf("?"));
             }
-            if (videoId.contains("_")) {
-                videoId = videoId.substring(0, videoId.indexOf("_"));
-            }
-            embedUrl = "https://www.dailymotion.com/embed/video/" + videoId;
         }
-        
+
+
         return embedUrl;
     }
 
-    // Getters y Setters
+
     public String getId() {
         return id;
     }

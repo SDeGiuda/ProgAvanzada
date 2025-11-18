@@ -3,9 +3,7 @@ package com.playlist;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-/**
- * Clase principal de la aplicación Mi Playlist Musical
- */
+
 @SpringBootApplication
 public class PlaylistApplication {
 

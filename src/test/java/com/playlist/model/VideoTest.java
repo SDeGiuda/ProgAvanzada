@@ -73,12 +73,12 @@ class VideoTest {
     }
 
     @Test
-    @DisplayName("Debe convertir URL de Dailymotion a embed")
-    void testGetEmbedUrlDailymotion() {
-        Video dailyVideo = new Video("Test Daily", "https://www.dailymotion.com/video/x8abcde");
-        String embedUrl = dailyVideo.getEmbedUrl();
-        assertTrue(embedUrl.contains("dailymotion.com/embed/video/"));
-        assertTrue(embedUrl.contains("x8abcde"));
+    @DisplayName("Debe convertir URL de Spotify a embed")
+    void testGetEmbedUrlSpotify() {
+        Video spotifyVideo = new Video("Test Spotify", "https://open.spotify.com/track/3n3Ppam7vgaVa1iaRUc9Lp");
+        String embedUrl = spotifyVideo.getEmbedUrl();
+        assertTrue(embedUrl.contains("open.spotify.com/embed/track/"));
+        assertTrue(embedUrl.contains("3n3Ppam7vgaVa1iaRUc9Lp"));
     }
 
     @Test
